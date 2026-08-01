@@ -1,0 +1,83 @@
+/**
+ * Cauan33XL Semantic Components
+ * -----------------------------
+ * These classes define the visual look of common UI elements.
+ * Use these instead of raw utility classes where possible.
+ */
+
+/* --- Buttons --- */
+.c33-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: var(--c33-radius-md);
+  font-family: var(--c33-font-main);
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: var(--c33-transition-fast);
+  cursor: pointer;
+  outline: none;
+  border: 1px solid transparent;
+}
+
+.c33-button-primary {
+  background-color: var(--c33-primary);
+  color: var(--c33-primary-fg);
+}
+
+.c33-button-primary:hover {
+  opacity: 0.9;
+  box-shadow: var(--c33-glow-primary);
+}
+
+.c33-button-outline {
+  background-color: transparent;
+  border-color: var(--c33-border);
+  color: var(--c33-fg);
+}
+
+.c33-button-outline:hover {
+  background-color: var(--c33-surface-hover);
+  border-color: var(--c33-primary);
+}
+
+.c33-button-ghost {
+  background-color: transparent;
+  color: var(--c33-fg);
+}
+
+.c33-button-ghost:hover {
+  background-color: var(--c33-surface-hover);
+}
+
+/* --- Cards --- */
+.c33-card {
+  background-color: var(--c33-surface);
+  border: 1px solid var(--c33-border);
+  border-radius: var(--c33-radius-lg);
+  padding: 1.5rem;
+  transition: var(--c33-transition-normal);
+}
+
+.c33-card-interactive:hover {
+  border-color: var(--c33-primary);
+  transform: translateY(-2px);
+  box-shadow: var(--c33-shadow-md);
+}
+
+/* --- Typography Helpers --- */
+.c33-title-main {
+  font-size: 3rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--c33-fg);
+}
+
+.c33-text-gradient {
+  background: linear-gradient(to right, var(--c33-fg), var(--c33-text-muted));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

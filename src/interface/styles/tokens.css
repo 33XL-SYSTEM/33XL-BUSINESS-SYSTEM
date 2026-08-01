@@ -1,0 +1,51 @@
+/**
+ * Cauan33XL Design Tokens
+ * -----------------------
+ * This file defines the core visual language of the ecosystem.
+ * Use these variables throughout the application for consistency.
+ */
+
+:root {
+  /* Colors - Core Palette */
+  --c33-bg: #0a0a0a;
+  --c33-fg: #ffffff;
+  --c33-surface: #141414;
+  --c33-surface-hover: #1a1a1a;
+  
+  /* Brand Colors */
+  --c33-primary: #ffffff;
+  --c33-primary-fg: #0a0a0a;
+  --c33-accent: #3b82f6; /* Modern Blue */
+  --c33-destructive: #ef4444;
+  
+  /* Borders & Dividers */
+  --c33-border: #262626;
+  --c33-ring: rgba(255, 255, 255, 0.3);
+  
+  /* Typography */
+  --c33-font-main: 'Inter', -apple-system, sans-serif;
+  --c33-font-mono: 'JetBrains Mono', monospace;
+  
+  --c33-text-muted: #a1a1aa;
+  --c33-text-dim: #71717a;
+  
+  /* Spacing & Radius */
+  --c33-radius-sm: 0.25rem;
+  --c33-radius-md: 0.5rem;
+  --c33-radius-lg: 0.75rem;
+  --c33-radius-full: 9999px;
+  
+  /* Shadows & Glows */
+  --c33-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
+  --c33-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+  --c33-glow-primary: 0 0 15px rgba(255, 255, 255, 0.1);
+  
+  /* Animation Durations */
+  --c33-transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --c33-transition-normal: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Dark Mode Overrides (if needed) */
+.dark {
+  /* Dark mode is the default for this ecosystem, but overrides go here */
+}
