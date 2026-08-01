@@ -1,3 +1,7 @@
+<div align="center">
+  <img src="public/favicons/favicon.png" alt="33XL BUSINESS SYSTEM Logo" width="250" />
+</div>
+
 # 33XL BUSINESS SYSTEM
 
 **O 33XL Business System é uma plataforma modular de modelagem e organização de negócios.**
