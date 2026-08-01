@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="public/favicons/favicon.png" alt="33XL BUSINESS SYSTEM Logo" width="250" />
+  <img src="public/favicons/favicon.png" alt="33XL BUSINESS SYSTEM Logo" width="670" />
 </div>
 
 # 33XL BUSINESS SYSTEM
