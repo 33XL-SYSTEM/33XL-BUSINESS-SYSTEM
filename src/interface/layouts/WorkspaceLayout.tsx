@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Receipt, Calculator, ChevronDown, ChevronUp, Boxes, Settings, Save, User, BarChart, Network, PenTool, AlignLeft, LineChart, Coins, TrendingUp, Tag, Package, FileText, GitMerge, Table, Activity, Scale, BarChart2, Plug, Cpu, Download } from "lucide-react";
+import { Receipt, Calculator, ChevronDown, ChevronUp, Boxes, Settings, Save, User, BarChart, Network, PenTool, AlignLeft, LineChart, Coins, TrendingUp, Tag, Package, FileText, GitMerge, Table, Activity, Scale, BarChart2, Plug, Cpu, Download, Paperclip, MousePointer2, Folder, Box, Database } from "lucide-react";
 import { useBusinessStore } from "@core/data/store";
-import { Button } from "@interface/components/button";
 import { MainBoard } from "./MainBoard";
 import { cn } from "@interface/components/utils";
+import { FocusOverlay } from "@interface/components/FocusOverlay";
+import { SettingsModal } from "@interface/components/SettingsModal";
 
 // Estrutura de Categorias e Componentes
 const toolboxCategories = [
@@ -14,6 +15,16 @@ const toolboxCategories = [
     components: [
       { id: "raw_note", title: "Bloco de Anotação", description: "Texto livre genérico.", icon: AlignLeft },
       { id: "calculator", title: "Calculadora", description: "Calculadora brutalista de mesa.", icon: Calculator },
+    ]
+  },
+  {
+    id: "folders",
+    title: "Pastas",
+    icon: Package,
+    components: [
+      { id: "folder_basic", title: "Pasta Comum", description: "Contêiner simples para organizar blocos.", icon: Folder },
+      { id: "folder_linked", title: "Pasta Interligada", description: "Pasta interligada. Compartilha a mesma dimensão.", icon: Box },
+      { id: "folder_smart", title: "Pasta Inteligente", description: "Pasta com sistema de banco de dados e listas.", icon: Database },
     ]
   },
   {
@@ -68,9 +79,11 @@ const toolboxCategories = [
 ];
 
 export function WorkspaceLayout() {
-  const { workspaceName } = useBusinessStore();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  
+  const { workspaceName, activeTool, setActiveTool, focusedWidgetId } = useBusinessStore();
 
   // Fecha tudo
   const toggleMenu = () => {
@@ -115,17 +128,75 @@ export function WorkspaceLayout() {
           </div>
 
           {/* Quick Access Tools (Right) */}
-          <div className="flex items-center gap-2 h-full">
-            <div className="flex items-center border-l-2 border-r-2 border-border h-full px-2 hidden sm:flex">
-              <Button variant="ghost" size="icon" className="rounded-none hover:bg-white hover:text-black text-muted-foreground hover:text-black">
-                <Save className="h-5 w-5" />
-              </Button>
-              <Button variant="ghost" size="icon" className="rounded-none hover:bg-white hover:text-black text-muted-foreground hover:text-black">
-                <Settings className="h-5 w-5" />
-              </Button>
-              <Button variant="ghost" size="icon" className="rounded-none hover:bg-white hover:text-black text-muted-foreground hover:text-black">
-                <User className="h-5 w-5" />
-              </Button>
+          <div className="flex items-center h-full">
+            
+            {/* Ferramentas de Interação */}
+            <div className="flex items-center border-l-2 border-border h-full">
+              {/* Cursor */}
+              <button 
+                onClick={() => setActiveTool('cursor')}
+                className={cn(
+                  "flex items-center justify-center h-full w-12 transition-colors", 
+                  activeTool === 'cursor' 
+                    ? "bg-white text-black" 
+                    : "text-white hover:bg-white/20"
+                )}
+                title="Modo Cursor"
+              >
+                <MousePointer2 className="h-4 w-4" />
+              </button>
+              
+              {/* Grampeador */}
+              <button 
+                onClick={() => setActiveTool('stapler')}
+                className={cn(
+                  "flex items-center justify-center h-full w-12 transition-colors border-l-2 border-border", 
+                  activeTool === 'stapler' 
+                    ? "bg-white text-black" 
+                    : "text-white hover:bg-white/20"
+                )}
+                title="Modo Grampeador"
+              >
+                <Paperclip className="h-4 w-4" />
+              </button>
+
+              {/* Árvore Lógica */}
+              <button 
+                onClick={() => setActiveTool('tree')}
+                className={cn(
+                  "flex items-center justify-center h-full w-12 transition-colors border-l-2 border-border", 
+                  activeTool === 'tree' 
+                    ? "bg-white text-black" 
+                    : "text-white hover:bg-white/20"
+                )}
+                title="Modo Árvore Lógica"
+              >
+                <Network className="h-4 w-4" />
+              </button>
+            </div>
+
+            <div className="flex items-center border-l-2 border-r-2 border-border h-full hidden sm:flex">
+              <button 
+                className="flex items-center justify-center h-full w-12 text-white hover:bg-white hover:text-black transition-colors"
+                title="Salvar"
+              >
+                <Save className="h-4 w-4" />
+              </button>
+              
+              <button 
+                className="flex items-center justify-center h-full w-12 text-white hover:bg-white hover:text-black transition-colors border-l-2 border-border"
+                title="Usuário"
+              >
+                <User className="h-4 w-4" />
+              </button>
+
+              <button 
+                onClick={() => setIsSettingsOpen(true)}
+                className="flex items-center justify-center h-full w-12 text-white hover:bg-white hover:text-black transition-colors border-l-2 border-border"
+                title="Configurações"
+              >
+                <Settings className="h-4 w-4" />
+              </button>
             </div>
 
             <span className="font-mono text-xs tracking-widest uppercase px-3 text-muted-foreground hidden lg:block">
@@ -176,10 +247,26 @@ export function WorkspaceLayout() {
                         x: window.innerWidth / 2 - 160, // 320 / 2
                         y: window.innerHeight / 2 - 120, // 240 / 2
                       };
-                      useBusinessStore.getState().addWidget(
+                      const state = useBusinessStore.getState();
+                      const focusedWidget = state.widgets.find(w => w.id === state.focusedWidgetId);
+                      const isFolderContext = focusedWidget?.type.startsWith('folder_');
+                      const parentId = isFolderContext 
+                        ? (focusedWidget?.type === 'folder_linked' ? 'ENDER_DIMENSION_01' : focusedWidget?.id) 
+                        : undefined;
+                      const isAddingFolder = component.id.startsWith('folder_');
+
+                      // Regra de Integridade Dimensional
+                      if (component.id === 'folder_linked' && focusedWidget?.type === 'folder_basic') {
+                        alert("ERRO DE LÓGICA: Não é possível instanciar uma Pasta Interligada (Ender Chest) dentro de uma Pasta Comum.");
+                        return;
+                      }
+
+                      state.addWidget(
                         component.id, 
                         component.title,
-                        centerPosition
+                        centerPosition,
+                        isAddingFolder ? { width: 140, height: 140 } : undefined,
+                        parentId
                       );
                       toggleMenu(); // Fecha tudo ao instanciar
                     }}
@@ -202,6 +289,12 @@ export function WorkspaceLayout() {
         )}
 
         <MainBoard />
+        
+        {/* Focus Mode Overlay */}
+        {focusedWidgetId && <FocusOverlay />}
+        
+        {/* Settings Modal */}
+        <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
       </main>
     </div>
   );
